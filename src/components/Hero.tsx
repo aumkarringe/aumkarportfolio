@@ -26,7 +26,7 @@ export const Hero = () => {
         const opacity = Math.max(0.6, 1 - progress * 0.4);
         
         videoRef.current.style.transform = `scale(${scale})`;
-        videoRef.current.style.filter = `blur(${blur}px) brightness(${0.8 + progress * 0.2})`;
+        videoRef.current.style.filter = `blur(${blur}px) brightness(${0.9 + progress * 0.2}) contrast(1.2) saturate(1.15)`;
         videoRef.current.style.opacity = `${opacity}`;
       }
     };
@@ -47,6 +47,9 @@ export const Hero = () => {
           loop
           muted
           playsInline
+          preload="auto"
+          onError={(e) => console.error('Hero video error', e)}
+          onCanPlay={() => videoRef.current?.play().catch(() => {})}
           className="absolute inset-0 w-full h-full object-cover transition-all duration-300 ease-out mix-blend-normal dark:mix-blend-normal"
           style={{
             transformOrigin: 'center center',
@@ -56,7 +59,7 @@ export const Hero = () => {
         </video>
         
         {/* Subtle overlay for readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-transparent to-background/40 dark:from-background/30 dark:via-transparent dark:to-background/50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/5 via-transparent to-background/20 dark:from-background/10 dark:via-transparent dark:to-background/30" />
       </div>
 
       <div className="container relative z-10 px-6">
