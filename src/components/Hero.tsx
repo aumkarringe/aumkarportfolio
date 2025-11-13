@@ -1,13 +1,81 @@
 import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useEffect, useRef, useState } from "react";
 
 export const Hero = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!sectionRef.current) return;
+      
+      const section = sectionRef.current;
+      const rect = section.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      // Calculate scroll progress (0 to 1)
+      const progress = Math.min(Math.max(1 - (rect.bottom / windowHeight), 0), 1);
+      setScrollProgress(progress);
+      
+      // Apply video effects based on scroll
+      if (videoRef.current) {
+        const scale = 1 + progress * 0.5;
+        const blur = progress * 10;
+        const opacity = Math.max(0.3, 1 - progress * 0.7);
+        
+        videoRef.current.style.transform = `scale(${scale})`;
+        videoRef.current.style.filter = `blur(${blur}px) brightness(${0.5 + progress * 0.3})`;
+        videoRef.current.style.opacity = `${opacity}`;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-hero">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/20 rounded-full blur-3xl animate-pulse delay-700" />
+    <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Video Background */}
+      <div className="fixed inset-0 w-full h-full overflow-hidden">
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover transition-all duration-300 ease-out mix-blend-overlay dark:mix-blend-screen"
+          style={{
+            transformOrigin: 'center center',
+          }}
+        >
+          <source src="/hero-background.mp4" type="video/mp4" />
+        </video>
+        
+        {/* Theme-aware overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/50 to-background dark:from-background/90 dark:via-background/70 dark:to-background" />
+        
+        {/* Animated gradient orbs */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div 
+            className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/30 rounded-full blur-3xl animate-pulse"
+            style={{
+              opacity: 0.4 - scrollProgress * 0.3,
+              transform: `scale(${1 + scrollProgress * 0.5})`
+            }}
+          />
+          <div 
+            className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/30 rounded-full blur-3xl animate-pulse"
+            style={{
+              animationDelay: '0.7s',
+              opacity: 0.4 - scrollProgress * 0.3,
+              transform: `scale(${1 + scrollProgress * 0.5})`
+            }}
+          />
+        </div>
       </div>
 
       <div className="container relative z-10 px-6">

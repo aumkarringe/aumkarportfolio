@@ -154,4 +154,22 @@ All colors MUST be HSL.
       transform: scale(1);
     }
   }
+
+  /* Video blend modes and effects */
+  .video-blend {
+    mix-blend-mode: overlay;
+  }
+
+  .dark .video-blend {
+    mix-blend-mode: screen;
+  }
+
+  /* Glassmorphism utilities */
+  .glass-effect {
+    @apply backdrop-blur-xl bg-background/30 border border-border/50;
+  }
+
+  .dark .glass-effect {
+    @apply backdrop-blur-xl bg-background/50 border border-border/30;
+  }
 }

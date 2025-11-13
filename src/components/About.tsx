@@ -35,12 +35,27 @@ export const About = () => {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div ref={imageRef} className="observe-animation">
             <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-primary rounded-2xl blur-2xl opacity-50 group-hover:opacity-75 transition-opacity" />
-              <img 
-                src={profileImage} 
-                alt="Aumkar Anant Ringe" 
-                className="relative rounded-2xl w-full shadow-card hover:shadow-glow transition-all duration-500 hover:scale-105"
-              />
+              {/* Multi-layered glow effect */}
+              <div className="absolute inset-0 bg-gradient-primary rounded-2xl blur-3xl opacity-40 group-hover:opacity-60 transition-all duration-700 animate-pulse" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-secondary/30 rounded-2xl blur-2xl opacity-30 group-hover:opacity-50 transition-all duration-700" />
+              
+              {/* Image container with blend modes */}
+              <div className="relative overflow-hidden rounded-2xl">
+                <img 
+                  src={profileImage} 
+                  alt="Aumkar Anant Ringe - Full Stack Engineer" 
+                  className="relative rounded-2xl w-full shadow-card hover:shadow-glow transition-all duration-700 hover:scale-105 mix-blend-luminosity dark:mix-blend-normal group-hover:mix-blend-normal"
+                  style={{
+                    filter: 'contrast(1.1) saturate(1.2)',
+                  }}
+                />
+                
+                {/* Overlay gradient for better blending */}
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/20 via-transparent to-secondary/10 opacity-60 group-hover:opacity-40 transition-opacity duration-700 rounded-2xl" />
+              </div>
+              
+              {/* Animated border */}
+              <div className="absolute inset-0 rounded-2xl border border-primary/20 group-hover:border-primary/40 transition-all duration-700" />
             </div>
           </div>
 
